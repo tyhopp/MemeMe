@@ -58,8 +58,10 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="albumButton" destination="Bem-Pb-fC2" id="gdy-4O-mqX"/>
                         <outlet property="cameraButton" destination="j5s-PR-iXi" id="qlU-sA-CSp"/>
                         <outlet property="cancelButton" destination="QSJ-Ga-N6F" id="RgL-Za-Nl8"/>
+                        <outlet property="imageView" destination="pLd-8q-qAJ" id="AMT-xU-DOr"/>
                         <outlet property="shareButton" destination="Ssy-pM-MJG" id="KZK-t9-LcX"/>
                     </connections>
                 </viewController>

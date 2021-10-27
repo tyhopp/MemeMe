@@ -11,9 +11,9 @@ import UIKit
 struct MemeModel {
     
     // MARK: Properties
-    
+
     var topText: String?
     var bottomText: String?
-    var originalImage: UIImage?
-    var memeImage: UIImage?
+    var image: UIImage?
+    var meme: UIImage?
 }
