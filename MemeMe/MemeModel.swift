@@ -9,6 +9,9 @@ import Foundation
 import UIKit
 
 struct MemeModel {
+    
+    // MARK: Properties
+    
     var topText: String?
     var bottomText: String?
     var originalImage: UIImage?

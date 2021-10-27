@@ -16,6 +16,10 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     // MARK: Properties
     
+    var memeModel: MemeModel!
+    
+    let cameraViewController = UIImagePickerController()
+    
     struct Alert {
         static let cameraAccessTitle = "Allow Camera Access"
         static let cameraAccessMessage = "Camera access is required to use photos for memes. Grant access in settings."
@@ -26,13 +30,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         static let cancel = "Cancel"
     }
     
-    let cancelAction = UIAlertAction(title: AlertAction.cancel, style: .cancel, handler: nil)
-    
     // MARK: Lifecycle methods
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -49,16 +47,25 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             case .denied:
                 showCameraPermissionAlert()
             case .notDetermined, .authorized: // The system will show the permission alert if not determined
-                showImagePicker(sourceType: .camera)
+                initCamera()
             @unknown default:
                 print("Unknown case for AVCaptureDevice.authorizationStatus")
             }
     }
     
-    // MARK: Composable functions
+    // MARK: Camera functions
+    
+    func initCamera() {
+        cameraViewController.delegate = self
+        cameraViewController.sourceType = .camera
+        cameraViewController.allowsEditing = true
+        present(cameraViewController, animated: true)
+    }
     
     func showCameraPermissionAlert() {
         let alert = UIAlertController(title: Alert.cameraAccessTitle, message: Alert.cameraAccessMessage, preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: AlertAction.cancel, style: .cancel, handler: nil)
         
         let navigateToSettingsAction = UIAlertAction(title: AlertAction.settings, style: .default) { (_) -> Void in
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
@@ -76,10 +83,16 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         present(alert, animated: true, completion: nil)
     }
     
-    func showImagePicker(sourceType: UIImagePickerController.SourceType) {
-        let camera = UIImagePickerController()
-        camera.delegate = self
-        camera.sourceType = sourceType
-        present(camera, animated: true)
+    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        var meme = MemeModel()
+
+        guard let image = info[.editedImage] as? UIImage else {
+            return
+        }
+        
+        meme.originalImage = image
+
+        picker.dismiss(animated: true)
     }
 }
