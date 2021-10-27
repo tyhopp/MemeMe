@@ -16,18 +16,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2yg-qq-URA" userLabel="Top Toolbar">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2yg-qq-URA" userLabel="Top Toolbar">
                                 <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
                                     <barButtonItem image="square.and.arrow.up" catalog="system" id="Ssy-pM-MJG"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="SZS-ui-j2F"/>
                                     <barButtonItem systemItem="cancel" id="QSJ-Ga-N6F"/>
                                 </items>
                             </toolbar>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6nU-ak-x1A" userLabel="Bottom Toolbar">
-                                <rect key="frame" x="0.0" y="818" width="414" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6nU-ak-x1A" userLabel="Bottom Toolbar">
+                                <rect key="frame" x="0.0" y="813" width="414" height="49"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Z6z-rc-dDs"/>
                                     <barButtonItem image="camera.fill" catalog="system" style="plain" id="j5s-PR-iXi" userLabel="Camera">
@@ -40,13 +38,24 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="0Ib-sL-4Y7"/>
                                 </items>
                             </toolbar>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pLd-8q-qAJ">
-                                <rect key="frame" x="0.0" y="88" width="414" height="730"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pLd-8q-qAJ">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6nU-ak-x1A" secondAttribute="trailing" id="1Y1-vq-dFv"/>
+                            <constraint firstItem="2yg-qq-URA" firstAttribute="bottom" secondItem="pLd-8q-qAJ" secondAttribute="top" id="2Az-61-k3Z"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="pLd-8q-qAJ" secondAttribute="trailing" id="5xL-aQ-6sa"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6nU-ak-x1A" secondAttribute="bottom" id="DBo-lF-oQB"/>
+                            <constraint firstItem="pLd-8q-qAJ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="O6K-QW-U6v"/>
+                            <constraint firstItem="2yg-qq-URA" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="VjW-nK-WQW"/>
+                            <constraint firstItem="6nU-ak-x1A" firstAttribute="top" secondItem="pLd-8q-qAJ" secondAttribute="bottom" id="Yz0-WO-W7d"/>
+                            <constraint firstItem="6nU-ak-x1A" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fWo-wp-qvb"/>
+                            <constraint firstItem="2yg-qq-URA" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="gOr-dx-geq"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="2yg-qq-URA" secondAttribute="trailing" id="qdc-sV-cK2"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="cameraButton" destination="j5s-PR-iXi" id="qlU-sA-CSp"/>
