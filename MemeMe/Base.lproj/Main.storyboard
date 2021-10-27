@@ -31,21 +31,33 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="0Ib-sL-4Y7"/>
                                 </items>
                             </toolbar>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2yg-qq-URA">
+                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem image="square.and.arrow.up" catalog="system" id="Ssy-pM-MJG"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="SZS-ui-j2F"/>
+                                    <barButtonItem systemItem="cancel" id="QSJ-Ga-N6F"/>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <connections>
                         <outlet property="cameraButton" destination="j5s-PR-iXi" id="qlU-sA-CSp"/>
+                        <outlet property="cancelButton" destination="QSJ-Ga-N6F" id="RgL-Za-Nl8"/>
+                        <outlet property="shareButton" destination="Ssy-pM-MJG" id="KZK-t9-LcX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="110"/>
+            <point key="canvasLocation" x="137.68115942028987" y="109.82142857142857"/>
         </scene>
     </scenes>
     <resources>
         <image name="camera.fill" catalog="system" width="128" height="94"/>
+        <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
