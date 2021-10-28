@@ -13,14 +13,18 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     // MARK: Outlets
     
-    // Top toolbar
+    // Top toolbar buttons
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
     // Image view
     @IBOutlet weak var imageView: UIImageView!
     
-    // Bottom toolbar
+    // Text fields
+    @IBOutlet weak var topTextField: UITextField!
+    @IBOutlet weak var bottomTextField: UITextField!
+    
+    // Bottom toolbar buttons
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBOutlet weak var albumButton: UIBarButtonItem!
     
@@ -48,6 +52,11 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         static let settings = "Settings"
     }
     
+    struct TextFieldString {
+        static let top = "TOP"
+        static let bottom = "BOTTOM"
+    }
+    
     struct ObserverKey {
         static let imageUpdated: NSNotification.Name = NSNotification.Name(rawValue: "image-updated")
     }
@@ -57,6 +66,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         setupObservers()
+        setupMemeText(textField: topTextField, text: TextFieldString.top)
+        setupMemeText(textField: bottomTextField, text: TextFieldString.bottom)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -115,6 +126,39 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         center.addObserver(forName: ObserverKey.imageUpdated, object: nil, queue: nil) { _ in
             self.imageView.image = self.memeModel.image
         }
+    }
+    
+    /**
+     Sets up a text input field.
+     
+     - Parameters:
+        - textField: The `UITextField` to set up
+        - text: The initial text populating the field
+     
+     - Returns: Void
+     */
+    func setupMemeText(textField: UITextField, text: String) -> Void {
+        var strokeColor: UIColor = .black
+        var foregroundColor: UIColor = .white
+        
+        if #available(iOS 13, *) {
+            strokeColor = .label
+            foregroundColor = .systemBackground
+        }
+        
+        let memeTextAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.strokeColor: strokeColor,
+            NSAttributedString.Key.foregroundColor: foregroundColor,
+            NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+            NSAttributedString.Key.strokeWidth: 4.0
+        ]
+        
+        textField.defaultTextAttributes = memeTextAttributes
+        textField.textAlignment = .center
+        textField.borderStyle = .none
+        textField.autocapitalizationType = .allCharacters
+        
+        textField.text = text
     }
     
     // MARK: Image picker presentation functions
