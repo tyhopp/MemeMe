@@ -50,16 +50,16 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6nU-ak-x1A" secondAttribute="trailing" id="1Y1-vq-dFv"/>
+                            <constraint firstAttribute="trailing" secondItem="6nU-ak-x1A" secondAttribute="trailing" id="1Y1-vq-dFv"/>
                             <constraint firstItem="2yg-qq-URA" firstAttribute="bottom" secondItem="pLd-8q-qAJ" secondAttribute="top" id="2Az-61-k3Z"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="pLd-8q-qAJ" secondAttribute="trailing" id="5xL-aQ-6sa"/>
+                            <constraint firstAttribute="trailing" secondItem="pLd-8q-qAJ" secondAttribute="trailing" id="5xL-aQ-6sa"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="6nU-ak-x1A" secondAttribute="bottom" id="DBo-lF-oQB"/>
-                            <constraint firstItem="pLd-8q-qAJ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="O6K-QW-U6v"/>
-                            <constraint firstItem="2yg-qq-URA" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="VjW-nK-WQW"/>
+                            <constraint firstItem="pLd-8q-qAJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="O6K-QW-U6v"/>
+                            <constraint firstItem="2yg-qq-URA" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="VjW-nK-WQW"/>
                             <constraint firstItem="6nU-ak-x1A" firstAttribute="top" secondItem="pLd-8q-qAJ" secondAttribute="bottom" id="Yz0-WO-W7d"/>
-                            <constraint firstItem="6nU-ak-x1A" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fWo-wp-qvb"/>
+                            <constraint firstItem="6nU-ak-x1A" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="fWo-wp-qvb"/>
                             <constraint firstItem="2yg-qq-URA" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="gOr-dx-geq"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="2yg-qq-URA" secondAttribute="trailing" id="qdc-sV-cK2"/>
+                            <constraint firstAttribute="trailing" secondItem="2yg-qq-URA" secondAttribute="trailing" id="qdc-sV-cK2"/>
                         </constraints>
                     </view>
                     <connections>
