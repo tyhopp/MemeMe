@@ -28,11 +28,19 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     var memeModel = MemeModel()
     
-    struct AlertString {
-        static let cameraAccessTitle = "Allow Camera Access"
-        static let cameraAccessMessage = "Camera access is required to use photos for memes. Grant access in settings."
-        static let settingsAction = "Settings"
-        static let cancelAction = "Cancel"
+    struct CameraPermissionAlertString {
+        static let title = "Allow Camera Access"
+        static let message = "Camera access is required to use photos for memes. Grant access in settings."
+    }
+    
+    struct PhotoLibraryPermissionAlertString {
+        static let title = "Allow Photo Library Access"
+        static let message = "No acceess permission was given for the selected photo. Grant access in settings."
+    }
+    
+    struct AlertActionLabel {
+        static let cancel = "Cancel"
+        static let settings = "Settings"
     }
     
     struct ObserverKey {
@@ -67,7 +75,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             case .restricted:
                 return // Button is disabled already if restricted, added this for exhaustive case coverage
             case .denied:
-                presentCameraPermissionAlert()
+            presentPermissionAlert(title: CameraPermissionAlertString.title, message: CameraPermissionAlertString.message)
             case .notDetermined, .authorized: // The system will show the permission alert if not determined
             presentImagePicker(sourceType: .camera)
             @unknown default:
@@ -93,7 +101,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     // MARK: Image picker presentation functions
     
     /**
-     Initializes and presents a `UIImagePickerViewController`.
+     Presents a `UIImagePickerViewController`.
      
      - Parameter sourceType: Either .camera or .photoLibrary
      
@@ -116,18 +124,21 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     /**
-     Initalizes and presents an alert with a cancel and settings action. Shown only if the user denied camera access prior.
+     Presents an alert with a cancel and navigation to settings action. Shown if the user attemts to access protected resources without granting explicit access prior.
      
      The settings action navigates the user to the system settings app specific to MemeMe.
      
+     - Parameters:
+        - title: Alert title string
+        - message: Alert message string
+     
      - Returns: Void
      */
-    func presentCameraPermissionAlert() -> Void {
-        let alert = UIAlertController(title: AlertString.cameraAccessTitle, message: AlertString.cameraAccessMessage, preferredStyle: .alert)
+    func presentPermissionAlert(title: String, message: String) -> Void {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        let cancelAction = UIAlertAction(title: AlertString.cancelAction, style: .cancel, handler: nil)
-        
-        let navigateToSettingsAction = UIAlertAction(title: AlertString.settingsAction, style: .default) { (_) -> Void in
+        let cancelAction = UIAlertAction(title: AlertActionLabel.cancel, style: .cancel, handler: nil)
+        let settingsAction = UIAlertAction(title: AlertActionLabel.settings, style: .default) { (_) -> Void in
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                 return
             }
@@ -138,7 +149,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         }
         
         alert.addAction(cancelAction)
-        alert.addAction(navigateToSettingsAction)
+        alert.addAction(settingsAction)
         
         present(alert, animated: true, completion: nil)
     }
@@ -170,9 +181,18 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
      
      - Returns: Void
      */
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) -> Void {
         let identifiers = results.compactMap(\.assetIdentifier)
+        
         let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
+        let fetchedAssetCount = fetchResult.countOfAssets(with: .image)
+        
+        // If we fail to fetch the selected image, assume the user needs to give access
+        if (fetchedAssetCount == 0) {
+            picker.dismiss(animated: true)
+            presentPermissionAlert(title: PhotoLibraryPermissionAlertString.title, message: PhotoLibraryPermissionAlertString.message)
+            return
+        }
         
         let option = PHImageRequestOptions()
         option.isSynchronous = true
