@@ -75,16 +75,30 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             case .restricted:
                 return // Button is disabled already if restricted, added this for exhaustive case coverage
             case .denied:
-            presentPermissionAlert(title: CameraPermissionAlertString.title, message: CameraPermissionAlertString.message)
+                presentPermissionAlert(title: CameraPermissionAlertString.title, message: CameraPermissionAlertString.message)
             case .notDetermined, .authorized: // The system will show the permission alert if not determined
-            presentImagePicker(sourceType: .camera)
+                presentImagePicker(sourceType: .camera)
             @unknown default:
                 print("Unknown case for AVCaptureDevice.authorizationStatus")
             }
     }
     
     @IBAction func showAlbum(_ sender: Any) {
-        presentImagePicker(sourceType: .photoLibrary)
+        if #available(iOS 14, *) {
+            let photoLibraryPresmission = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+            switch photoLibraryPresmission {
+                case .restricted:
+                    return
+                case .denied:
+                    presentPermissionAlert(title: PhotoLibraryPermissionAlertString.title, message: PhotoLibraryPermissionAlertString.message)
+                case .notDetermined, .authorized, .limited:
+                    presentImagePicker(sourceType: .photoLibrary)
+            @unknown default:
+                print("Unknown case for PHPhotoLibrary.authorizationStatus")
+            }
+        } else {
+            presentImagePicker(sourceType: .photoLibrary)
+        }
     }
     
     // MARK: Setup functions
@@ -181,6 +195,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
      
      - Returns: Void
      */
+    @available(iOS 14, *)
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) -> Void {
         let identifiers = results.compactMap(\.assetIdentifier)
         
