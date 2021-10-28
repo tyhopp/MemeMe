@@ -35,7 +35,12 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     struct PhotoLibraryPermissionAlertString {
         static let title = "Allow Photo Library Access"
-        static let message = "No acceess permission was given for the selected photo. Grant access in settings."
+        static let message = "Photo library access is required to use photos for memes. Grant access in settings."
+    }
+    
+    struct PhotoLibraryLimitedPermissionAlertString {
+        static let title = "Allow Photo Access"
+        static let message = "The selected photo requires permission to use for memes. Grant access in settings."
     }
     
     struct AlertActionLabel {
@@ -199,13 +204,20 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) -> Void {
         let identifiers = results.compactMap(\.assetIdentifier)
         
+        // Cancel button touched
+        if (identifiers.isEmpty) {
+            picker.dismiss(animated: true)
+            return
+        }
+        
         let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
         let fetchedAssetCount = fetchResult.countOfAssets(with: .image)
+        let photoLibraryPermission = PHPhotoLibrary.authorizationStatus(for: .readWrite)
         
-        // If we fail to fetch the selected image, assume the user needs to give access
-        if (fetchedAssetCount == 0) {
+        // Photo without permission touched
+        if (photoLibraryPermission == .limited && fetchedAssetCount == 0) {
             picker.dismiss(animated: true)
-            presentPermissionAlert(title: PhotoLibraryPermissionAlertString.title, message: PhotoLibraryPermissionAlertString.message)
+            presentPermissionAlert(title: PhotoLibraryLimitedPermissionAlertString.title, message: PhotoLibraryLimitedPermissionAlertString.message)
             return
         }
         
@@ -216,6 +228,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         if let asset = fetchResult.firstObject {
             var photo = UIImage()
             
+            // Convert asset to image
             manager.requestImage(for: asset, targetSize: CGSize(width: CGFloat(asset.pixelWidth), height: CGFloat(asset.pixelHeight)), contentMode: PHImageContentMode.aspectFit, options: nil, resultHandler: {(result, info) -> Void in
                 photo = result!
                 self.memeModel.image = photo
@@ -223,7 +236,5 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
                 picker.dismiss(animated: true)
             })
         }
-        
-        picker.dismiss(animated: true)
     }
 }
