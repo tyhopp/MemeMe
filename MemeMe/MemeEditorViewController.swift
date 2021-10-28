@@ -7,8 +7,9 @@
 
 import UIKit
 import AVFoundation
+import PhotosUI
 
-class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
     
     // MARK: Outlets
     
@@ -26,7 +27,6 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     // MARK: Properties
     
     var memeModel = MemeModel()
-    let cameraViewController = UIImagePickerController()
     
     struct AlertString {
         static let cameraAccessTitle = "Allow Camera Access"
@@ -69,10 +69,14 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             case .denied:
                 presentCameraPermissionAlert()
             case .notDetermined, .authorized: // The system will show the permission alert if not determined
-                presentCamera()
+            presentImagePicker(sourceType: .camera)
             @unknown default:
                 print("Unknown case for AVCaptureDevice.authorizationStatus")
             }
+    }
+    
+    @IBAction func showAlbum(_ sender: Any) {
+        presentImagePicker(sourceType: .photoLibrary)
     }
     
     // MARK: Setup functions
@@ -86,18 +90,29 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         }
     }
     
-    // MARK: Camera functions
+    // MARK: Image picker presentation functions
     
     /**
-     Initializes and presents the camera view controller.
+     Initializes and presents a `UIImagePickerViewController`.
+     
+     - Parameter sourceType: Either .camera or .photoLibrary
      
      - Returns: Void
      */
-    func presentCamera() -> Void {
-        cameraViewController.delegate = self
-        cameraViewController.sourceType = .camera
-        cameraViewController.allowsEditing = true
-        present(cameraViewController, animated: true)
+    func presentImagePicker(sourceType: UIImagePickerController.SourceType) -> Void {
+        if #available(iOS 14, *), sourceType == .photoLibrary {
+            let photoLibrary = PHPhotoLibrary.shared()
+            let photoPickerConfig = PHPickerConfiguration(photoLibrary: photoLibrary)
+            let photoPicker = PHPickerViewController(configuration: photoPickerConfig)
+            photoPicker.delegate = self
+            present(photoPicker, animated: true)
+        } else {
+            let imagePickerViewController = UIImagePickerController()
+            imagePickerViewController.delegate = self
+            imagePickerViewController.sourceType = sourceType
+            imagePickerViewController.allowsEditing = true
+            present(imagePickerViewController, animated: true)
+        }
     }
     
     /**
@@ -128,6 +143,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         present(alert, animated: true, completion: nil)
     }
     
+    // MARK: Image picker delegate functions
+    
     /**
      Delegate method that fires when the user has selected a captured photo to use.
      
@@ -143,6 +160,35 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         
         memeModel.image = image
         NotificationCenter.default.post(name: ObserverKey.imageUpdated, object: nil)
+        picker.dismiss(animated: true)
+    }
+    
+    /**
+     Delegate method that fires when the user has selected a photo from the photo album to use.
+     
+     Posts to the notification center upon completion.
+     
+     - Returns: Void
+     */
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        let identifiers = results.compactMap(\.assetIdentifier)
+        let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
+        
+        let option = PHImageRequestOptions()
+        option.isSynchronous = true
+        let manager = PHImageManager.default()
+        
+        if let asset = fetchResult.firstObject {
+            var photo = UIImage()
+            
+            manager.requestImage(for: asset, targetSize: CGSize(width: CGFloat(asset.pixelWidth), height: CGFloat(asset.pixelHeight)), contentMode: PHImageContentMode.aspectFit, options: nil, resultHandler: {(result, info) -> Void in
+                photo = result!
+                self.memeModel.image = photo
+                NotificationCenter.default.post(name: ObserverKey.imageUpdated, object: nil)
+                picker.dismiss(animated: true)
+            })
+        }
+        
         picker.dismiss(animated: true)
     }
 }
