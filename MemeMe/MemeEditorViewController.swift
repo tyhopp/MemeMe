@@ -28,12 +28,6 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBOutlet weak var albumButton: UIBarButtonItem!
     
-    // MARK: Properties
-    
-    var memeModel = MemeModel()
-    
-    let notificationCenter = NotificationCenter.default
-    
     // MARK: Lifecycle methods
     
     override func viewDidLoad() {
@@ -58,11 +52,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     @IBAction func reset(_ sender: UIButton) {
         topTextField.text = TextFieldString.top
         bottomTextField.text = TextFieldString.bottom
-        memeModel.topText = nil
-        memeModel.bottomText = nil
-        memeModel.image = nil
-        memeModel.meme = nil
-        NotificationCenter.default.post(name: ObserverKey.imageUpdated, object: nil)
+        imageView.image = nil
     }
     
     // MARK: Bottom toolbar actions
@@ -102,20 +92,13 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     // MARK: Observer functions
     
     func setupObservers() {
-        // Update the image view when the meme model image changes
-        notificationCenter.addObserver(forName: ObserverKey.imageUpdated, object: nil, queue: nil) { _ in
-            self.imageView.image = self.memeModel.image
-        }
-        
-        // Adjust bottom text field when the keyboard appears
-        notificationCenter.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     func removeObservers() {
-        notificationCenter.removeObserver(self, name: ObserverKey.imageUpdated, object: nil)
-        notificationCenter.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        notificationCenter.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     // MARK: Setup functions
@@ -197,8 +180,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             return
         }
         
-        memeModel.image = image
-        NotificationCenter.default.post(name: ObserverKey.imageUpdated, object: nil)
+        imageView.image = image
         picker.dismiss(animated: true)
     }
     
@@ -233,8 +215,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             // Convert asset to image
             manager.requestImage(for: asset, targetSize: CGSize(width: CGFloat(asset.pixelWidth), height: CGFloat(asset.pixelHeight)), contentMode: PHImageContentMode.aspectFit, options: nil, resultHandler: {(result, info) -> Void in
                 photo = result!
-                self.memeModel.image = photo
-                NotificationCenter.default.post(name: ObserverKey.imageUpdated, object: nil)
+                self.imageView.image = photo
                 picker.dismiss(animated: true)
             })
         }
@@ -259,12 +240,10 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             if textField.text == "" {
                 textField.text = TextFieldString.top
             }
-            memeModel.topText = textField.text
         case TextFieldTag.bottom.rawValue:
             if textField.text == "" {
                 textField.text = TextFieldString.bottom
             }
-            memeModel.bottomText = textField.text
         default:
             return
         }
