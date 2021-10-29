@@ -22,7 +22,11 @@
                                     <constraint firstAttribute="height" constant="44" id="ieb-b9-47q"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem image="square.and.arrow.up" catalog="system" id="Ssy-pM-MJG"/>
+                                    <barButtonItem image="square.and.arrow.up" catalog="system" id="Ssy-pM-MJG">
+                                        <connections>
+                                            <action selector="share:" destination="BYZ-38-t0r" id="Uvl-7Z-LlK"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="SZS-ui-j2F"/>
                                     <barButtonItem systemItem="cancel" id="QSJ-Ga-N6F">
                                         <connections>
@@ -92,11 +96,13 @@
                     <connections>
                         <outlet property="albumButton" destination="Bem-Pb-fC2" id="gdy-4O-mqX"/>
                         <outlet property="bottomTextField" destination="oZZ-PF-eKN" id="a1T-2N-Brw"/>
+                        <outlet property="bottomToolbar" destination="6nU-ak-x1A" id="P88-1W-1IW"/>
                         <outlet property="cameraButton" destination="j5s-PR-iXi" id="qlU-sA-CSp"/>
                         <outlet property="cancelButton" destination="QSJ-Ga-N6F" id="RgL-Za-Nl8"/>
                         <outlet property="imageView" destination="pLd-8q-qAJ" id="AMT-xU-DOr"/>
                         <outlet property="shareButton" destination="Ssy-pM-MJG" id="KZK-t9-LcX"/>
                         <outlet property="topTextField" destination="KQL-cr-zod" id="RTR-li-b1w"/>
+                        <outlet property="topToolbar" destination="2yg-qq-URA" id="48G-cB-8as"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

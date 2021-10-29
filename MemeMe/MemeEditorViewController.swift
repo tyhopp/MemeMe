@@ -13,7 +13,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     // MARK: Outlets
     
-    // Top toolbar buttons
+    // Top toolbar
+    @IBOutlet weak var topToolbar: UIToolbar!
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
@@ -24,7 +25,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
     
-    // Bottom toolbar buttons
+    // Bottom toolbar
+    @IBOutlet weak var bottomToolbar: UIToolbar!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBOutlet weak var albumButton: UIBarButtonItem!
     
@@ -49,10 +51,18 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     // MARK: Top toolbar actions
     
-    @IBAction func reset(_ sender: UIButton) {
+    @IBAction func share(_ sender: Any) {
+        let memedImage = generateMemedImage()
+        let _ = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imageView.image!, memedImage: memedImage)
+        let activityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
+        present(activityViewController, animated: true)
+    }
+    
+    @IBAction func reset(_ sender: Any) {
         topTextField.text = TextFieldString.top
         bottomTextField.text = TextFieldString.bottom
         imageView.image = nil
+        shareButton.isEnabled = false
     }
     
     // MARK: Bottom toolbar actions
@@ -71,7 +81,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         }
     }
     
-    @IBAction func showAlbum(_ sender: UIButton) {
+    @IBAction func showAlbum(_ sender: Any) {
         if #available(iOS 14, *) {
             let photoLibraryPresmission = PHPhotoLibrary.authorizationStatus(for: .readWrite)
             switch photoLibraryPresmission {
@@ -89,7 +99,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         }
     }
     
-    // MARK: Observer functions
+    // MARK: Observer methods
     
     func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -101,7 +111,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    // MARK: Setup functions
+    // MARK: Setup methods
     
     func setupMemeText(textField: UITextField, text: String, tag: TextFieldTag) -> Void {
         var strokeColor: UIColor = .black
@@ -134,7 +144,30 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera) || AVCaptureDevice.authorizationStatus(for: .video) == .restricted
     }
     
-    // MARK: Image picker presentation functions
+    // MARK: Meme methods
+    
+    func generateMemedImage() -> UIImage {
+        // Hide toolbars
+        showHideToolbars(hidden: true)
+        
+        // Combine original image and text into memed image
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        let memedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        // Show toolbars
+        showHideToolbars(hidden: false)
+        
+        return memedImage
+    }
+    
+    func showHideToolbars(hidden: Bool) {
+        topToolbar.isHidden = hidden
+        bottomToolbar.isHidden = hidden
+    }
+    
+    // MARK: Image picker presentation methods
     
     func presentImagePicker(sourceType: UIImagePickerController.SourceType) -> Void {
         if #available(iOS 14, *), sourceType == .photoLibrary {
@@ -172,7 +205,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         present(alert, animated: true, completion: nil)
     }
     
-    // MARK: Image picker delegate functions
+    // MARK: Image picker delegate methods
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) -> Void {
 
@@ -181,6 +214,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         }
         
         imageView.image = image
+        shareButton.isEnabled = true
         picker.dismiss(animated: true)
     }
     
@@ -216,12 +250,13 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             manager.requestImage(for: asset, targetSize: CGSize(width: CGFloat(asset.pixelWidth), height: CGFloat(asset.pixelHeight)), contentMode: PHImageContentMode.aspectFit, options: nil, resultHandler: {(result, info) -> Void in
                 photo = result!
                 self.imageView.image = photo
+                self.shareButton.isEnabled = true
                 picker.dismiss(animated: true)
             })
         }
     }
     
-    // MARK: Text field delegate and helper functions
+    // MARK: Text field delegate and helper methods
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -259,7 +294,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         }
     }
     
-    // MARK: Keyboard functions
+    // MARK: Keyboard methods
     
     func getKeyboardHeight(_ notification: Notification) -> CGFloat {
         let userInfo = notification.userInfo
