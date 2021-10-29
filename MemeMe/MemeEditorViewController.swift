@@ -120,15 +120,6 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     // MARK: Setup functions
     
-    /**
-     Sets up a text input field.
-     
-     - Parameters:
-        - textField: The `UITextField` to set up
-        - text: The initial text populating the field
-     
-     - Returns: Void
-     */
     func setupMemeText(textField: UITextField, text: String, tag: TextFieldTag) -> Void {
         var strokeColor: UIColor = .black
         var foregroundColor: UIColor = .white
@@ -155,20 +146,13 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         textField.text = text
     }
     
-    func setupBottomToolbar() {
+    func setupBottomToolbar() -> Void {
         shareButton.isEnabled = false
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera) || AVCaptureDevice.authorizationStatus(for: .video) == .restricted
     }
     
     // MARK: Image picker presentation functions
     
-    /**
-     Presents a `UIImagePickerViewController`.
-     
-     - Parameter sourceType: Either .camera or .photoLibrary
-     
-     - Returns: Void
-     */
     func presentImagePicker(sourceType: UIImagePickerController.SourceType) -> Void {
         if #available(iOS 14, *), sourceType == .photoLibrary {
             let photoLibrary = PHPhotoLibrary.shared()
@@ -185,17 +169,6 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         }
     }
     
-    /**
-     Presents an alert with a cancel and navigation to settings action. Shown if the user attemts to access protected resources without granting explicit access prior.
-     
-     The settings action navigates the user to the system settings app specific to MemeMe.
-     
-     - Parameters:
-        - title: Alert title string
-        - message: Alert message string
-     
-     - Returns: Void
-     */
     func presentPermissionAlert(title: String, message: String) -> Void {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
@@ -218,13 +191,6 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     // MARK: Image picker delegate functions
     
-    /**
-     Fires when the user has selected a captured photo to use.
-     
-     Posts to the notification center upon completion.
-     
-     - Returns: Void
-     */
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) -> Void {
 
         guard let image = info[.editedImage] as? UIImage else {
@@ -236,13 +202,6 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         picker.dismiss(animated: true)
     }
     
-    /**
-     Fires when the user has selected a photo from the photo album to use.
-     
-     Posts to the notification center upon completion.
-     
-     - Returns: Void
-     */
     @available(iOS 14, *)
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) -> Void {
         let identifiers = results.compactMap(\.assetIdentifier)
@@ -281,17 +240,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         }
     }
     
-    // MARK: Text field delegate related functions
+    // MARK: Text field delegate and helper functions
     
-    /**
-     Fires when the return key is tapped on the keyboard.
-
-     - Parameter textField: The currently focused `UITextField`.
-
-     Return true to hide the keyboard, false to ignore.
-
-     - Returns: Boolean
-     */
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
