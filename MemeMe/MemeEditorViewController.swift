@@ -9,7 +9,7 @@ import UIKit
 import AVFoundation
 import PhotosUI
 
-class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate {
+class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PHPickerViewControllerDelegate, UITextFieldDelegate {
     
     // MARK: Outlets
     
@@ -61,11 +61,12 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         static let imageUpdated: NSNotification.Name = NSNotification.Name(rawValue: "image-updated")
     }
     
+    let notificationCenter = NotificationCenter.default
+    
     // MARK: Lifecycle methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupObservers()
         setupMemeText(textField: topTextField, text: TextFieldString.top)
         setupMemeText(textField: bottomTextField, text: TextFieldString.bottom)
     }
@@ -77,10 +78,13 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         shareButton.isEnabled = false
         cancelButton.isEnabled = false
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera) || AVCaptureDevice.authorizationStatus(for: .video) == .restricted
+        
+        setupObservers()
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: ObserverKey.imageUpdated, object: nil)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeObservers()
     }
     
     // MARK: Actions
@@ -117,16 +121,48 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         }
     }
     
-    // MARK: Setup functions
+    // MARK: Observer functions
     
     func setupObservers() {
-        let center = NotificationCenter.default
-        
         // Update the image view when the meme model image changes
-        center.addObserver(forName: ObserverKey.imageUpdated, object: nil, queue: nil) { _ in
+        notificationCenter.addObserver(forName: ObserverKey.imageUpdated, object: nil, queue: nil) { _ in
             self.imageView.image = self.memeModel.image
         }
+        
+        // Adjust text fields when the keyboard appears
+        notificationCenter.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
+    
+    func removeObservers() {
+        notificationCenter.removeObserver(self, name: ObserverKey.imageUpdated, object: nil)
+        notificationCenter.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        notificationCenter.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    // MARK: Keyboard functions
+    
+    func getKeyboardHeight(_ notification: Notification) -> CGFloat {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue // of CGRect
+        return keyboardSize.cgRectValue.height
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) -> Void {
+        if topTextField.isEditing {
+            return
+        }
+        view.frame.origin.y -= getKeyboardHeight(notification)
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) -> Void {
+        if topTextField.isEditing {
+            return
+        }
+        view.frame.origin.y += getKeyboardHeight(notification)
+    }
+    
+    // MARK: Setup functions
     
     /**
      Sets up a text input field.
@@ -157,7 +193,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         textField.textAlignment = .center
         textField.borderStyle = .none
         textField.autocapitalizationType = .allCharacters
-        
+        textField.returnKeyType = .done
+        textField.delegate = self
         textField.text = text
     }
     
@@ -280,5 +317,21 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
                 picker.dismiss(animated: true)
             })
         }
+    }
+    
+    // MARK: Text field delegate functions
+    
+    /**
+     Delegate method that fires when the return key is tapped on the keyboard.
+
+     - Parameter textField: The currently focused `UITextField`.
+
+     Return true to hide the keyboard, false to ignore.
+
+     - Returns: Boolean
+     */
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
