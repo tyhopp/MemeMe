@@ -88,8 +88,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     @IBAction func showAlbum(_ sender: Any) {
         if #available(iOS 14, *) {
-            let photoLibraryPresmission = PHPhotoLibrary.authorizationStatus(for: .readWrite)
-            switch photoLibraryPresmission {
+            let photoLibraryPermission = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+            switch photoLibraryPermission {
             case .restricted:
                 return
             case .denied:
