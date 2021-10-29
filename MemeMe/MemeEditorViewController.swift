@@ -53,8 +53,10 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     @IBAction func share(_ sender: Any) {
         let memedImage = generateMemedImage()
-        let _ = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imageView.image!, memedImage: memedImage)
         let activityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
+        activityViewController.completionWithItemsHandler = { activity, success, items, error in
+            self.save(memedImage: memedImage)
+        }
         present(activityViewController, animated: true)
     }
     
@@ -165,6 +167,13 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     func showHideToolbars(hidden: Bool) {
         topToolbar.isHidden = hidden
         bottomToolbar.isHidden = hidden
+    }
+    
+    func save(memedImage: UIImage) {
+        // Create the meme
+        let _ = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imageView.image!, memedImage: memedImage)
+        
+        // TODO: It's unclear what the course requires us to do here, leave it for now
     }
     
     // MARK: Image picker presentation methods
