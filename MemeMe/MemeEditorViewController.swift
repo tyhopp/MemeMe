@@ -79,11 +79,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // TODO: Extract into own function
-        shareButton.isEnabled = false
-        cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera) || AVCaptureDevice.authorizationStatus(for: .video) == .restricted
-        
+        setupBottomToolbar()
         setupObservers()
     }
     
@@ -94,16 +90,19 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     // MARK: Top toolbar actions
     
-    @IBAction func reset() {
+    @IBAction func reset(_ sender: UIButton) {
         topTextField.text = TextFieldString.top
         bottomTextField.text = TextFieldString.bottom
-        
+        memeModel.topText = nil
+        memeModel.bottomText = nil
+        memeModel.image = nil
+        memeModel.meme = nil
+        NotificationCenter.default.post(name: ObserverKey.imageUpdated, object: nil)
     }
-    
     
     // MARK: Bottom toolbar actions
     
-    @IBAction func showCamera() {
+    @IBAction func showCamera(_ sender: UIButton) {
         let cameraPermission = AVCaptureDevice.authorizationStatus(for: .video)
         switch cameraPermission {
         case .restricted:
@@ -117,7 +116,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         }
     }
     
-    @IBAction func showAlbum() {
+    @IBAction func showAlbum(_ sender: UIButton) {
         if #available(iOS 14, *) {
             let photoLibraryPresmission = PHPhotoLibrary.authorizationStatus(for: .readWrite)
             switch photoLibraryPresmission {
@@ -143,7 +142,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             self.imageView.image = self.memeModel.image
         }
         
-        // Adjust text fields when the keyboard appears
+        // Adjust bottom text field when the keyboard appears
         notificationCenter.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -189,6 +188,11 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         textField.delegate = self
         textField.tag = tag.rawValue
         textField.text = text
+    }
+    
+    func setupBottomToolbar() {
+        shareButton.isEnabled = false
+        cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera) || AVCaptureDevice.authorizationStatus(for: .video) == .restricted
     }
     
     // MARK: Image picker presentation functions
@@ -335,15 +339,19 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) -> Void {
-        if textField.text == "" {
-            switch textField.tag {
-            case TextFieldTag.top.rawValue:
+        switch textField.tag {
+        case TextFieldTag.top.rawValue:
+            if textField.text == "" {
                 textField.text = TextFieldString.top
-            case TextFieldTag.bottom.rawValue:
-                textField.text = TextFieldString.bottom
-            default:
-                return
             }
+            memeModel.topText = textField.text
+        case TextFieldTag.bottom.rawValue:
+            if textField.text == "" {
+                textField.text = TextFieldString.bottom
+            }
+            memeModel.bottomText = textField.text
+        default:
+            return
         }
     }
     
