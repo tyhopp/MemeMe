@@ -59,6 +59,12 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     struct ObserverKey {
         static let imageUpdated: NSNotification.Name = NSNotification.Name(rawValue: "image-updated")
+        static let topTextUpdated: NSNotification.Name = NSNotification.Name(rawValue: "top-text-updated")
+        static let bottomTextUpdated: NSNotification.Name = NSNotification.Name(rawValue: "bottom-text-updated")
+    }
+    
+    enum TextFieldTag: Int {
+        case top, bottom
     }
     
     let notificationCenter = NotificationCenter.default
@@ -67,8 +73,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupMemeText(textField: topTextField, text: TextFieldString.top)
-        setupMemeText(textField: bottomTextField, text: TextFieldString.bottom)
+        setupMemeText(textField: topTextField, text: TextFieldString.top, tag: TextFieldTag.top)
+        setupMemeText(textField: bottomTextField, text: TextFieldString.bottom, tag: TextFieldTag.bottom)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,7 +82,6 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         
         // TODO: Extract into own function
         shareButton.isEnabled = false
-        cancelButton.isEnabled = false
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera) || AVCaptureDevice.authorizationStatus(for: .video) == .restricted
         
         setupObservers()
@@ -87,32 +92,41 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         removeObservers()
     }
     
-    // MARK: Actions
+    // MARK: Top toolbar actions
+    
+    @IBAction func reset() {
+        topTextField.text = TextFieldString.top
+        bottomTextField.text = TextFieldString.bottom
+        
+    }
+    
+    
+    // MARK: Bottom toolbar actions
     
     @IBAction func showCamera() {
         let cameraPermission = AVCaptureDevice.authorizationStatus(for: .video)
         switch cameraPermission {
-            case .restricted:
-                return // Button is disabled already if restricted, added this for exhaustive case coverage
-            case .denied:
-                presentPermissionAlert(title: CameraPermissionAlertString.title, message: CameraPermissionAlertString.message)
-            case .notDetermined, .authorized: // The system will show the permission alert if not determined
-                presentImagePicker(sourceType: .camera)
-            @unknown default:
-                print("Unknown case for AVCaptureDevice.authorizationStatus")
-            }
+        case .restricted:
+            return // Button is disabled already if restricted, added this for exhaustive case coverage
+        case .denied:
+            presentPermissionAlert(title: CameraPermissionAlertString.title, message: CameraPermissionAlertString.message)
+        case .notDetermined, .authorized: // The system will show the permission alert if not determined
+            presentImagePicker(sourceType: .camera)
+        @unknown default:
+            print("Unknown case for AVCaptureDevice.authorizationStatus")
+        }
     }
     
-    @IBAction func showAlbum(_ sender: Any) {
+    @IBAction func showAlbum() {
         if #available(iOS 14, *) {
             let photoLibraryPresmission = PHPhotoLibrary.authorizationStatus(for: .readWrite)
             switch photoLibraryPresmission {
-                case .restricted:
-                    return
-                case .denied:
-                    presentPermissionAlert(title: PhotoLibraryPermissionAlertString.title, message: PhotoLibraryPermissionAlertString.message)
-                case .notDetermined, .authorized, .limited:
-                    presentImagePicker(sourceType: .photoLibrary)
+            case .restricted:
+                return
+            case .denied:
+                presentPermissionAlert(title: PhotoLibraryPermissionAlertString.title, message: PhotoLibraryPermissionAlertString.message)
+            case .notDetermined, .authorized, .limited:
+                presentImagePicker(sourceType: .photoLibrary)
             @unknown default:
                 print("Unknown case for PHPhotoLibrary.authorizationStatus")
             }
@@ -140,28 +154,6 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         notificationCenter.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    // MARK: Keyboard functions
-    
-    func getKeyboardHeight(_ notification: Notification) -> CGFloat {
-        let userInfo = notification.userInfo
-        let keyboardSize = userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue // of CGRect
-        return keyboardSize.cgRectValue.height
-    }
-    
-    @objc func keyboardWillShow(_ notification: Notification) -> Void {
-        if topTextField.isEditing {
-            return
-        }
-        view.frame.origin.y -= getKeyboardHeight(notification)
-    }
-    
-    @objc func keyboardWillHide(_ notification: Notification) -> Void {
-        if topTextField.isEditing {
-            return
-        }
-        view.frame.origin.y += getKeyboardHeight(notification)
-    }
-    
     // MARK: Setup functions
     
     /**
@@ -173,7 +165,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
      
      - Returns: Void
      */
-    func setupMemeText(textField: UITextField, text: String) -> Void {
+    func setupMemeText(textField: UITextField, text: String, tag: TextFieldTag) -> Void {
         var strokeColor: UIColor = .black
         var foregroundColor: UIColor = .white
         
@@ -195,6 +187,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         textField.autocapitalizationType = .allCharacters
         textField.returnKeyType = .done
         textField.delegate = self
+        textField.tag = tag.rawValue
         textField.text = text
     }
     
@@ -257,7 +250,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     // MARK: Image picker delegate functions
     
     /**
-     Delegate method that fires when the user has selected a captured photo to use.
+     Fires when the user has selected a captured photo to use.
      
      Posts to the notification center upon completion.
      
@@ -275,7 +268,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     /**
-     Delegate method that fires when the user has selected a photo from the photo album to use.
+     Fires when the user has selected a photo from the photo album to use.
      
      Posts to the notification center upon completion.
      
@@ -319,10 +312,10 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         }
     }
     
-    // MARK: Text field delegate functions
+    // MARK: Text field delegate related functions
     
     /**
-     Delegate method that fires when the return key is tapped on the keyboard.
+     Fires when the return key is tapped on the keyboard.
 
      - Parameter textField: The currently focused `UITextField`.
 
@@ -333,5 +326,56 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) -> Void {
+        if textFieldHasDefaultText(textField: textField) {
+            textField.text = ""
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) -> Void {
+        if textField.text == "" {
+            switch textField.tag {
+            case TextFieldTag.top.rawValue:
+                textField.text = TextFieldString.top
+            case TextFieldTag.bottom.rawValue:
+                textField.text = TextFieldString.bottom
+            default:
+                return
+            }
+        }
+    }
+    
+    func textFieldHasDefaultText(textField: UITextField) -> Bool {
+        if textField.tag == TextFieldTag.top.rawValue && textField.text == TextFieldString.top {
+            return true
+        } else if textField.tag == TextFieldTag.bottom.rawValue && textField.text == TextFieldString.bottom {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // MARK: Keyboard functions
+    
+    func getKeyboardHeight(_ notification: Notification) -> CGFloat {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue // of CGRect
+        return keyboardSize.cgRectValue.height
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) -> Void {
+        if topTextField.isEditing {
+            return
+        }
+        view.frame.origin.y -= getKeyboardHeight(notification)
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) -> Void {
+        if topTextField.isEditing {
+            return
+        }
+        view.frame.origin.y += getKeyboardHeight(notification)
     }
 }

@@ -24,7 +24,11 @@
                                 <items>
                                     <barButtonItem image="square.and.arrow.up" catalog="system" id="Ssy-pM-MJG"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="SZS-ui-j2F"/>
-                                    <barButtonItem systemItem="cancel" id="QSJ-Ga-N6F"/>
+                                    <barButtonItem systemItem="cancel" id="QSJ-Ga-N6F">
+                                        <connections>
+                                            <action selector="reset:" destination="BYZ-38-t0r" id="cVS-hz-Oc6"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6nU-ak-x1A" userLabel="Bottom Toolbar">
