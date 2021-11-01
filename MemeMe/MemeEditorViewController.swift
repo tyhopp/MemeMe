@@ -58,7 +58,9 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             activityViewController.popoverPresentationController?.sourceView = view
         }
         activityViewController.completionWithItemsHandler = { activity, success, items, error in
-            self.save(memedImage: memedImage)
+            if success {
+                self.save(memedImage: memedImage)
+            }
         }
         present(activityViewController, animated: true)
     }
