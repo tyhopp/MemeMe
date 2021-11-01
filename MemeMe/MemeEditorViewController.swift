@@ -286,13 +286,9 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     func textFieldDidEndEditing(_ textField: UITextField) -> Void {
         switch textField.tag {
         case TextFieldTag.top.rawValue:
-            if textField.text == "" {
-                textField.text = TextFieldString.top
-            }
+            ensureTextFieldNotEmpty(textField: textField, defaultText: TextFieldString.top)
         case TextFieldTag.bottom.rawValue:
-            if textField.text == "" {
-                textField.text = TextFieldString.bottom
-            }
+            ensureTextFieldNotEmpty(textField: textField, defaultText: TextFieldString.bottom)
         default:
             return
         }
@@ -305,6 +301,12 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             return true
         } else {
             return false
+        }
+    }
+    
+    func ensureTextFieldNotEmpty(textField: UITextField, defaultText: String) {
+        if textField.text == "" {
+            textField.text = defaultText
         }
     }
     
