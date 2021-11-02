@@ -70,6 +70,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         bottomTextField.text = TextFieldString.bottom
         imageView.image = nil
         shareButton.isEnabled = false
+        self.dismiss(animated: true, completion: nil)
     }
     
     // MARK: Bottom toolbar actions
