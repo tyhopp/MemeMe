@@ -10,14 +10,51 @@ import UIKit
 
 class SentMemeTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    // MARK: Outlets
+    
+    @IBOutlet weak var sentMemeTableView: UITableView!
+    
+    // MARK: Properties
+    
+    let notificationCenter: NotificationCenter = NotificationCenter.default
+    var memeSharedNotification: Notification? = nil
+    
+    // MARK: Lifecycle methods
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        notificationCenter.addObserver(forName: ObserverKey.memeShared, object: nil, queue: nil, using: { notification in
+            self.memeSharedNotification = notification
+            self.sentMemeTableView.reloadData()
+        })
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if let notification = self.memeSharedNotification {
+            notificationCenter.removeObserver(notification, name: ObserverKey.memeShared, object: nil)
+        }
+    }
+    
+    // MARK: Table delegate methods
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // TODO: Implement
-        return 0
+        return (UIApplication.shared.delegate as! AppDelegate).memes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // TODO: Implement
-        let cell = UITableViewCell()
+        // TODO: Create custom table cell to achieve target layout
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SentMemeTableCell")!
+        let memes = (UIApplication.shared.delegate as! AppDelegate).memes
+        let meme = memes[(indexPath as NSIndexPath).row]
+        
+        // Set the table cell content
+        cell.textLabel?.text = "\(meme.topText ?? TextFieldString.top) ... \(meme.bottomText ?? TextFieldString.bottom)"
+        cell.imageView?.image = meme.memedImage
+        
         return cell
     }
 }

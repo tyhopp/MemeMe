@@ -33,9 +33,7 @@ struct TextFieldString {
 }
 
 struct ObserverKey {
-    static let imageUpdated: NSNotification.Name = NSNotification.Name(rawValue: "image-updated")
-    static let topTextUpdated: NSNotification.Name = NSNotification.Name(rawValue: "top-text-updated")
-    static let bottomTextUpdated: NSNotification.Name = NSNotification.Name(rawValue: "bottom-text-updated")
+    static let memeShared: NSNotification.Name = NSNotification.Name(rawValue: "meme-shared")
 }
 
 enum TextFieldTag: Int {

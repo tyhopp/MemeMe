@@ -177,9 +177,13 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     func save(memedImage: UIImage) {
         // Create the meme
-        let _ = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imageView.image!, memedImage: memedImage)
+        let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imageView.image!, memedImage: memedImage)
         
-        // TODO: It's unclear what the course requires us to do here, leave it for now
+        // Add it to the memes array on the application delegate
+        (UIApplication.shared.delegate as! AppDelegate).memes.append(meme)
+        
+        // Dispatch notification of meme shared
+        NotificationCenter.default.post(name: ObserverKey.memeShared, object: nil)
     }
     
     // MARK: Image picker presentation methods

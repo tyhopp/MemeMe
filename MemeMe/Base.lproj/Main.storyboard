@@ -47,20 +47,54 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="5MA-r5-iMd">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SentMemeTableCell" textLabel="ibN-9D-d8V" style="IBUITableViewCellStyleDefault" id="zV9-ED-Doh">
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zV9-ED-Doh" id="QRk-Gx-KiH">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ibN-9D-d8V">
+                                                    <rect key="frame" x="20" y="0.0" width="374" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="VgV-RK-dfD" id="E65-y0-9oN"/>
+                                    <outlet property="delegate" destination="VgV-RK-dfD" id="I3N-bB-DdE"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="q4v-6G-7DW"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="b8Z-Ro-2Y8" firstAttribute="top" secondItem="q4v-6G-7DW" secondAttribute="top" id="3oN-5t-9jv"/>
                             <constraint firstItem="b8Z-Ro-2Y8" firstAttribute="trailing" secondItem="q4v-6G-7DW" secondAttribute="trailing" id="8gh-JD-vqh"/>
+                            <constraint firstItem="5MA-r5-iMd" firstAttribute="trailing" secondItem="q4v-6G-7DW" secondAttribute="trailing" id="Ft6-0t-Ohb"/>
                             <constraint firstItem="b8Z-Ro-2Y8" firstAttribute="leading" secondItem="q4v-6G-7DW" secondAttribute="leading" id="MjO-8C-lk1"/>
+                            <constraint firstItem="5MA-r5-iMd" firstAttribute="leading" secondItem="q4v-6G-7DW" secondAttribute="leading" id="QmF-4O-9Cw"/>
+                            <constraint firstItem="5MA-r5-iMd" firstAttribute="bottom" secondItem="q4v-6G-7DW" secondAttribute="bottom" id="wvB-PU-ORV"/>
+                            <constraint firstItem="5MA-r5-iMd" firstAttribute="top" secondItem="b8Z-Ro-2Y8" secondAttribute="bottom" id="zd6-XQ-4XJ"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="list.bullet" catalog="system" id="gC8-dy-8Xh"/>
+                    <connections>
+                        <outlet property="sentMemeTableView" destination="5MA-r5-iMd" id="YdD-mR-0p6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z7q-ek-p8A" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-748" y="-73"/>
+            <point key="canvasLocation" x="-749.27536231884062" y="-73.660714285714278"/>
         </scene>
         <!--Sent Meme Collection View Controller-->
         <scene sceneID="0dg-th-90e">
@@ -216,7 +250,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="cT7-e2-hoG"/>
+        <segue reference="MJV-B6-wAC"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="camera.fill" catalog="system" width="128" height="94"/>
