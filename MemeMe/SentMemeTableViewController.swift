@@ -45,16 +45,22 @@ class SentMemeTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // TODO: Create custom table cell to achieve target layout
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "SentMemeTableCell")!
         let memes = (UIApplication.shared.delegate as! AppDelegate).memes
         let meme = memes[(indexPath as NSIndexPath).row]
         
-        // Set the table cell content
-        cell.textLabel?.text = "\(meme.topText ?? TextFieldString.top) ... \(meme.bottomText ?? TextFieldString.bottom)"
-        cell.imageView?.image = meme.memedImage
-        
+        // Set the table cell image
+        if let memedImage = meme.memedImage {
+            if let imageView = cell.contentView.subviews[0] as? UIImageView {
+                imageView.image = memedImage
+            }
+        }
+
+        // Set the table cell label
+        if let label = cell.contentView.subviews[1].subviews[0] as? UILabel {
+            label.text = "\(meme.topText ?? TextFieldString.top) ... \(meme.bottomText ?? TextFieldString.bottom)"
+        }
+            
         return cell
     }
 }
