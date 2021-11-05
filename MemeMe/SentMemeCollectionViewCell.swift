@@ -9,5 +9,7 @@ import Foundation
 import UIKit
 
 class SentMemeCollectionViewCell: UICollectionViewCell {
-    // TODO: Implement
+    @IBOutlet weak var memeImageView: UIImageView!
+    @IBOutlet weak var memeTopLabel: UILabel!
+    @IBOutlet weak var memeBottomLabel: UILabel!
 }

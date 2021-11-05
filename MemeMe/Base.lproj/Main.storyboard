@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -145,12 +146,93 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="pZ6-Gf-asV">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dBP-Xa-nt5">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SentMemeCollectionViewCell" id="VXw-dG-uYc" customClass="SentMemeCollectionViewCell" customModule="MemeMe" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="uio-p3-2dq">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4pJ-SW-jzu">
+                                                    <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                                </imageView>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fyc-7b-2g1" userLabel="Top Label View">
+                                                    <rect key="frame" x="0.0" y="12" width="128" height="20.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W8o-y7-Jxm">
+                                                            <rect key="frame" x="0.0" y="0.0" width="128" height="20.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="W8o-y7-Jxm" firstAttribute="top" secondItem="Fyc-7b-2g1" secondAttribute="top" id="dso-6L-i4e"/>
+                                                        <constraint firstItem="W8o-y7-Jxm" firstAttribute="bottom" secondItem="Fyc-7b-2g1" secondAttribute="bottom" id="gL9-Su-Ft5"/>
+                                                        <constraint firstItem="W8o-y7-Jxm" firstAttribute="trailing" secondItem="Fyc-7b-2g1" secondAttribute="trailingMargin" constant="8" id="h86-FD-N1U"/>
+                                                        <constraint firstItem="W8o-y7-Jxm" firstAttribute="leading" secondItem="Fyc-7b-2g1" secondAttribute="leadingMargin" constant="-8" id="uUJ-p8-4Ww"/>
+                                                    </constraints>
+                                                </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AbL-DT-yRQ" userLabel="Bottom Label View">
+                                                    <rect key="frame" x="0.0" y="95.5" width="128" height="20.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="09u-LG-AiF">
+                                                            <rect key="frame" x="0.0" y="0.0" width="128" height="20.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="09u-LG-AiF" firstAttribute="leading" secondItem="AbL-DT-yRQ" secondAttribute="leadingMargin" constant="-8" id="PA1-O0-PuK"/>
+                                                        <constraint firstItem="09u-LG-AiF" firstAttribute="top" secondItem="AbL-DT-yRQ" secondAttribute="top" id="dRu-mj-o3c"/>
+                                                        <constraint firstItem="09u-LG-AiF" firstAttribute="trailing" secondItem="AbL-DT-yRQ" secondAttribute="trailingMargin" constant="8" id="gMv-r4-jgf"/>
+                                                        <constraint firstItem="09u-LG-AiF" firstAttribute="bottom" secondItem="AbL-DT-yRQ" secondAttribute="bottom" id="yRI-3C-sjn"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="AbL-DT-yRQ" firstAttribute="trailing" secondItem="uio-p3-2dq" secondAttribute="trailing" id="0gQ-RQ-0nL"/>
+                                                <constraint firstItem="4pJ-SW-jzu" firstAttribute="top" secondItem="uio-p3-2dq" secondAttribute="top" id="DnG-2g-K6q"/>
+                                                <constraint firstItem="AbL-DT-yRQ" firstAttribute="leading" secondItem="uio-p3-2dq" secondAttribute="leading" id="Lw1-VI-yso"/>
+                                                <constraint firstItem="4pJ-SW-jzu" firstAttribute="leading" secondItem="uio-p3-2dq" secondAttribute="leading" id="T26-Bz-Vx2"/>
+                                                <constraint firstItem="Fyc-7b-2g1" firstAttribute="leading" secondItem="uio-p3-2dq" secondAttribute="leading" id="aSN-gU-KTJ"/>
+                                                <constraint firstItem="AbL-DT-yRQ" firstAttribute="bottom" secondItem="uio-p3-2dq" secondAttribute="bottom" constant="-12" id="fMd-Se-Hqf"/>
+                                                <constraint firstItem="Fyc-7b-2g1" firstAttribute="top" secondItem="uio-p3-2dq" secondAttribute="top" constant="12" id="lV6-kK-G7g"/>
+                                                <constraint firstItem="4pJ-SW-jzu" firstAttribute="bottom" secondItem="uio-p3-2dq" secondAttribute="bottom" id="qdd-nz-NPT"/>
+                                                <constraint firstItem="4pJ-SW-jzu" firstAttribute="trailing" secondItem="uio-p3-2dq" secondAttribute="trailing" id="vJA-Ft-Xhc"/>
+                                                <constraint firstItem="Fyc-7b-2g1" firstAttribute="trailing" secondItem="uio-p3-2dq" secondAttribute="trailing" id="wDd-HU-biQ"/>
+                                            </constraints>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="128" height="128"/>
+                                        <connections>
+                                            <outlet property="memeBottomLabel" destination="09u-LG-AiF" id="X8b-Nx-cnL"/>
+                                            <outlet property="memeImageView" destination="4pJ-SW-jzu" id="IKx-f7-5sN"/>
+                                            <outlet property="memeTopLabel" destination="W8o-y7-Jxm" id="2qv-Xy-OLF"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Pr8-Zo-8m1"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="8hn-hf-MLo" firstAttribute="top" secondItem="Pr8-Zo-8m1" secondAttribute="top" id="5oH-Ch-Wsz"/>
+                            <constraint firstItem="pZ6-Gf-asV" firstAttribute="leading" secondItem="Pr8-Zo-8m1" secondAttribute="leading" id="Bkc-MV-hrn"/>
                             <constraint firstItem="8hn-hf-MLo" firstAttribute="trailing" secondItem="Pr8-Zo-8m1" secondAttribute="trailing" id="R6T-T8-kUS"/>
+                            <constraint firstItem="pZ6-Gf-asV" firstAttribute="bottom" secondItem="Pr8-Zo-8m1" secondAttribute="bottom" id="RHc-it-UNq"/>
+                            <constraint firstItem="pZ6-Gf-asV" firstAttribute="top" secondItem="8hn-hf-MLo" secondAttribute="bottom" id="dFa-Gx-gp2"/>
+                            <constraint firstItem="pZ6-Gf-asV" firstAttribute="trailing" secondItem="Pr8-Zo-8m1" secondAttribute="trailing" id="hte-KP-v5w"/>
                             <constraint firstItem="8hn-hf-MLo" firstAttribute="leading" secondItem="Pr8-Zo-8m1" secondAttribute="leading" id="tO9-jz-798"/>
                         </constraints>
                     </view>
@@ -158,7 +240,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mds-fs-vFg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-749" y="560"/>
+            <point key="canvasLocation" x="-749.27536231884062" y="559.82142857142856"/>
         </scene>
         <!--Meme Detail View Controller-->
         <scene sceneID="oeg-Be-qdP">
@@ -279,7 +361,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="MJV-B6-wAC"/>
+        <segue reference="cT7-e2-hoG"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="camera.fill" catalog="system" width="128" height="94"/>
