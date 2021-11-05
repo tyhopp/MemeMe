@@ -76,4 +76,12 @@ class SentMemeCollectionViewController: UIViewController, UICollectionViewDelega
             
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let memes = (UIApplication.shared.delegate as! AppDelegate).memes
+        let meme = memes[(indexPath as NSIndexPath).row]
+        
+        let coordinator = SentMemeCoordinator()
+        coordinator.presentDetailView(storyboard: storyboard, navigationController: navigationController, meme: meme)
+    }
 }

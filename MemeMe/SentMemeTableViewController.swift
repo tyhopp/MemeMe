@@ -64,4 +64,12 @@ class SentMemeTableViewController: UIViewController, UITableViewDelegate, UITabl
             
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let memes = (UIApplication.shared.delegate as! AppDelegate).memes
+        let meme = memes[(indexPath as NSIndexPath).row]
+        
+        let coordinator = SentMemeCoordinator()
+        coordinator.presentDetailView(storyboard: storyboard, navigationController: navigationController, meme: meme)
+    }
 }
