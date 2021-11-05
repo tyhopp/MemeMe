@@ -50,13 +50,16 @@ class SentMemeTableViewController: UIViewController, UITableViewDelegate, UITabl
         let meme = memes[(indexPath as NSIndexPath).row]
         
         // Set the table cell image
-        if let memedImage = meme.memedImage {
-            cell.sentMemeImageView?.image = memedImage
+        if let originalImage = meme.originalImage {
+            cell.memeImageView?.image = originalImage
         }
 
-        // Set the table cell label
+        // Set the table cell labels
         if let memeTopText = meme.topText, let memeBottomText = meme.bottomText {
-            cell.sentMemeLabel?.text = "\(memeTopText)...\(memeBottomText)"
+            let memeTextAttributes = MemeText().getAttributes(fontSize: 20)
+            cell.memeTopLabel.attributedText = NSMutableAttributedString(string: memeTopText, attributes: memeTextAttributes)
+            cell.memeBottomLabel.attributedText = NSMutableAttributedString(string: memeBottomText, attributes: memeTextAttributes)
+            cell.memeRightLabel?.text = "\(memeTopText)...\(memeBottomText)"
         }
             
         return cell

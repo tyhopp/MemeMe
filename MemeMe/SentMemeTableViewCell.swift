@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 class SentMemeTableViewCell: UITableViewCell {
-    @IBOutlet weak var sentMemeImageView: UIImageView!
-    @IBOutlet weak var sentMemeLabel: UILabel!
+    @IBOutlet weak var memeImageView: UIImageView!
+    @IBOutlet weak var memeRightLabel: UILabel!
+    @IBOutlet weak var memeTopLabel: UILabel!
+    @IBOutlet weak var memeBottomLabel: UILabel!
 }

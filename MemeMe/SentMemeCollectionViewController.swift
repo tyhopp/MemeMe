@@ -70,8 +70,8 @@ class SentMemeCollectionViewController: UIViewController, UICollectionViewDelega
         // Set the collection cell top and bottom labels
         if let memeTopText = meme.topText, let memeBottomText = meme.bottomText {
             let memeTextAttributes = MemeText().getAttributes(fontSize: 20)
-            cell.memeTopLabel.attributedText = NSMutableAttributedString(string: memeTopText, attributes: memeTextAttributes)
-            cell.memeBottomLabel.attributedText = NSMutableAttributedString(string: memeBottomText, attributes: memeTextAttributes)
+            cell.memeTopLabel.attributedText = NSAttributedString(string: memeTopText, attributes: memeTextAttributes)
+            cell.memeBottomLabel.attributedText = NSAttributedString(string: memeBottomText, attributes: memeTextAttributes)
         }
             
         return cell
