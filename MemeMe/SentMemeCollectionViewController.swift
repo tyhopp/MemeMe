@@ -43,11 +43,12 @@ class SentMemeCollectionViewController: UIViewController, UICollectionViewDelega
         super.viewDidLoad()
 
         let space: CGFloat = 3.0
-        let dimension = (view.frame.size.width - (2 * space)) / 3.0
+        let width = (view.frame.size.width - (2 * space)) / 3.0
+        let height = (view.frame.size.height - (2 * space)) / 6.0
 
         sentMemeFlowLayout.minimumInteritemSpacing = space
         sentMemeFlowLayout.minimumLineSpacing = space
-        sentMemeFlowLayout.itemSize = CGSize(width: dimension, height: dimension)
+        sentMemeFlowLayout.itemSize = CGSize(width: width, height: height)
     }
     
     // MARK: Delegate methods
