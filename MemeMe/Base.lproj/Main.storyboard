@@ -149,21 +149,21 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="pZ6-Gf-asV">
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dBP-Xa-nt5">
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dBP-Xa-nt5">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SentMemeCollectionViewCell" id="VXw-dG-uYc" customClass="SentMemeCollectionViewCell" customModule="MemeMe" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" reuseIdentifier="SentMemeCollectionViewCell" id="VXw-dG-uYc" customClass="SentMemeCollectionViewCell" customModule="MemeMe" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="uio-p3-2dq">
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" id="0pQ-E2-0yT">
                                             <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4pJ-SW-jzu">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4pJ-SW-jzu">
                                                     <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fyc-7b-2g1" userLabel="Top Label View">
@@ -202,16 +202,16 @@
                                                 </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="AbL-DT-yRQ" firstAttribute="trailing" secondItem="uio-p3-2dq" secondAttribute="trailing" id="0gQ-RQ-0nL"/>
-                                                <constraint firstItem="4pJ-SW-jzu" firstAttribute="top" secondItem="uio-p3-2dq" secondAttribute="top" id="DnG-2g-K6q"/>
-                                                <constraint firstItem="AbL-DT-yRQ" firstAttribute="leading" secondItem="uio-p3-2dq" secondAttribute="leading" id="Lw1-VI-yso"/>
-                                                <constraint firstItem="4pJ-SW-jzu" firstAttribute="leading" secondItem="uio-p3-2dq" secondAttribute="leading" id="T26-Bz-Vx2"/>
-                                                <constraint firstItem="Fyc-7b-2g1" firstAttribute="leading" secondItem="uio-p3-2dq" secondAttribute="leading" id="aSN-gU-KTJ"/>
-                                                <constraint firstItem="AbL-DT-yRQ" firstAttribute="bottom" secondItem="uio-p3-2dq" secondAttribute="bottom" constant="-12" id="fMd-Se-Hqf"/>
-                                                <constraint firstItem="Fyc-7b-2g1" firstAttribute="top" secondItem="uio-p3-2dq" secondAttribute="top" constant="12" id="lV6-kK-G7g"/>
-                                                <constraint firstItem="4pJ-SW-jzu" firstAttribute="bottom" secondItem="uio-p3-2dq" secondAttribute="bottom" id="qdd-nz-NPT"/>
-                                                <constraint firstItem="4pJ-SW-jzu" firstAttribute="trailing" secondItem="uio-p3-2dq" secondAttribute="trailing" id="vJA-Ft-Xhc"/>
-                                                <constraint firstItem="Fyc-7b-2g1" firstAttribute="trailing" secondItem="uio-p3-2dq" secondAttribute="trailing" id="wDd-HU-biQ"/>
+                                                <constraint firstItem="AbL-DT-yRQ" firstAttribute="trailing" secondItem="0pQ-E2-0yT" secondAttribute="trailing" id="0gQ-RQ-0nL"/>
+                                                <constraint firstItem="4pJ-SW-jzu" firstAttribute="height" secondItem="0pQ-E2-0yT" secondAttribute="height" id="G84-Bk-K2t"/>
+                                                <constraint firstItem="AbL-DT-yRQ" firstAttribute="leading" secondItem="0pQ-E2-0yT" secondAttribute="leading" id="Lw1-VI-yso"/>
+                                                <constraint firstItem="4pJ-SW-jzu" firstAttribute="leading" secondItem="0pQ-E2-0yT" secondAttribute="leading" id="T26-Bz-Vx2"/>
+                                                <constraint firstItem="Fyc-7b-2g1" firstAttribute="leading" secondItem="0pQ-E2-0yT" secondAttribute="leading" id="aSN-gU-KTJ"/>
+                                                <constraint firstItem="AbL-DT-yRQ" firstAttribute="bottom" secondItem="0pQ-E2-0yT" secondAttribute="bottom" constant="-12" id="fMd-Se-Hqf"/>
+                                                <constraint firstItem="Fyc-7b-2g1" firstAttribute="top" secondItem="0pQ-E2-0yT" secondAttribute="top" constant="12" id="lV6-kK-G7g"/>
+                                                <constraint firstItem="4pJ-SW-jzu" firstAttribute="width" secondItem="0pQ-E2-0yT" secondAttribute="width" id="mhF-GH-eul"/>
+                                                <constraint firstItem="4pJ-SW-jzu" firstAttribute="bottom" secondItem="0pQ-E2-0yT" secondAttribute="bottom" id="qdd-nz-NPT"/>
+                                                <constraint firstItem="Fyc-7b-2g1" firstAttribute="trailing" secondItem="0pQ-E2-0yT" secondAttribute="trailing" id="wDd-HU-biQ"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="128" height="128"/>
@@ -222,6 +222,10 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="i1V-Es-roM" id="Zfg-nm-Bmm"/>
+                                    <outlet property="delegate" destination="i1V-Es-roM" id="8vm-Pe-t0L"/>
+                                </connections>
                             </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Pr8-Zo-8m1"/>
@@ -237,6 +241,10 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="rectangle.grid.2x2" catalog="system" id="Xi5-Ij-pka"/>
+                    <connections>
+                        <outlet property="sentMemeCollectionView" destination="pZ6-Gf-asV" id="jCp-zk-CkD"/>
+                        <outlet property="sentMemeFlowLayout" destination="dBP-Xa-nt5" id="ynB-vF-zy9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mds-fs-vFg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
