@@ -122,21 +122,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     // MARK: Setup methods
     
     func setupMemeText(textField: UITextField, text: String, tag: TextFieldTag) -> Void {
-        var strokeColor: UIColor = .black
-        var foregroundColor: UIColor = .white
-        
-        if #available(iOS 13, *) {
-            strokeColor = .label
-            foregroundColor = .systemBackground
-        }
-        
-        let memeTextAttributes: [NSAttributedString.Key: Any] = [
-            NSAttributedString.Key.strokeColor: strokeColor,
-            NSAttributedString.Key.foregroundColor: foregroundColor,
-            NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-            NSAttributedString.Key.strokeWidth: -4.0
-        ]
-        
+        let memeTextAttributes = MemeText().getAttributes(fontSize: 40)
         textField.defaultTextAttributes = memeTextAttributes
         textField.textAlignment = .center
         textField.borderStyle = .none

@@ -68,21 +68,7 @@ class SentMemeCollectionViewController: UIViewController, UICollectionViewDelega
 
         // Set the collection cell top and bottom labels
         if let memeTopText = meme.topText, let memeBottomText = meme.bottomText {
-            var strokeColor: UIColor = .black
-            var foregroundColor: UIColor = .white
-            
-            if #available(iOS 13, *) {
-                strokeColor = .label
-                foregroundColor = .systemBackground
-            }
-            
-            let memeTextAttributes: [NSMutableAttributedString.Key: Any] = [
-                NSMutableAttributedString.Key.strokeColor: strokeColor,
-                NSMutableAttributedString.Key.foregroundColor: foregroundColor,
-                NSMutableAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 20)!,
-                NSMutableAttributedString.Key.strokeWidth: -4.0
-            ]
-            
+            let memeTextAttributes = MemeText().getAttributes(fontSize: 20)
             cell.memeTopLabel.attributedText = NSMutableAttributedString(string: memeTopText, attributes: memeTextAttributes)
             cell.memeBottomLabel.attributedText = NSMutableAttributedString(string: memeBottomText, attributes: memeTextAttributes)
         }
